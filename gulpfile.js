@@ -29,8 +29,8 @@ gulp.task('build', function(){
         .pipe(gulp.dest('dist/js'));
 });
 
-gulp.task('build dev', function(){
-    return gulp.src(config.ts)
+gulp.task('build dev', ['build ts'], function(){
+    return gulp.src('dist/ts/db-designer.ts')
         .pipe(typescript({ target: "ES5" }))
         .pipe(concat('db-designer.js'))
         .pipe(gulp.dest('dist/js'));

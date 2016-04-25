@@ -1,33 +1,41 @@
 /// <reference path="../references.ts" />
 class UIController {
-	_tabElements: any[];
-	constructor() {
-		this._tabElements.push(document.getElementById('designer'));
-		this._tabElements.push(document.getElementById('code'));
-		this._tabElements.push(document.getElementById('canvasDraw'));
+	_buttons: any[] = [3];
+	_elements: any[] = [3];
+	constructor() {		
+		this._buttons[0] = document.getElementById('click-designer');
+		this._buttons[1] = document.getElementById('click-code');
+		this._buttons[2] = document.getElementById('click-canvas');
+
+		this._elements[0] = document.getElementById('tab-designer');
+		this._elements[1] = document.getElementById('tab-code');
+		this._elements[2] = document.getElementById('tab-canvas');
+
+		this.hideElements();
+		this._elements[0].className = "shown";
 		this.addEventListeners();
 	}
 
 	addEventListeners(){
-		this._tabElements[0].addEventListener('click', function(){
-			this.showTabElement(0);
-		})
-
-		for (var i = 0; i < this._tabElements.length; i++){
-			this._tabElements[i].addEventListener('click', function() {
-				this.showTabElement(i);
-			});
+		for (var i = 0; i < this._buttons.length; i++){
+			this.addClickEventElement(i);
 		}
 	}
 
-	showTabElement(index: number){
-		this.hideTabElements();
-		this._tabElements[index].className = "shown";
+	addClickEventElement(index){
+		this._buttons[index].addEventListener('click', () => {
+			this.showElement(index);
+		});
 	}
 
-	hideTabElements(){
-		for (var i = 0; i < this._tabElements.length; i++){
-			this._tabElements[i].className = "hidden";
+	hideElements(){
+		for (var i = 0; i < this._elements.length; i++){
+			this._elements[i].className = "hidden";
 		}
+	}
+
+	showElement(index: number){
+		this.hideElements();
+		this._elements[index].className = "shown";
 	}
 }
