@@ -1,0 +1,32 @@
+{
+  "name": "dbdesigner",
+  "version": "1.0.0",
+  "description": "",
+  "main": "gulpfile.js",
+  "scripts": {
+    "start": "node app.js",
+    "build": "gulp",
+    "build dev": "gulp dev",
+    "build-docs": "typedoc --target ES5 --out ./docs ./src",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bookmonkey/DB-Designer.git"
+  },
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/Bookmonkey/DB-Designer/issues"
+  },
+  "homepage": "https://github.com/Bookmonkey/DB-Designer#readme",
+  "dependencies": {
+    "del": "^2.2.0",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-order": "^1.1.1",
+    "gulp-tsc": "^1.1.5",
+    "gulp-typescript": "^2.13.0",
+    "gulp-uglify": "^1.5.3",
+    "typedoc": "^0.3.12"
+  }
+}
