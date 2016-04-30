@@ -14,3 +14,15 @@ body{
 	display: none;
 	visibility: hidden;
 }
+
+
+/*-----------------------------------------
+	Table Classes
+-----------------------------------------*/
+.table{
+	position: relative;
+	width: 120px;
+	border:1px solid  #333;
+	position: relative;
+	display: block;
+}
