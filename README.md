@@ -7,5 +7,9 @@ npm install
 
 ## Running
 ```
-npm run dev
+npm run build dev
+```
+Or 
+```
+gulp dev
 ```
