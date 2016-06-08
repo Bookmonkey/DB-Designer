@@ -1,13 +1,14 @@
 /// <reference path="../references.ts" />
 class DesignerController{
 	_outputLocation: Element;
+
+	// Defines the Value types. In the future it will be abstracted to support various types in different schemas.
 	_valueTypes = [
 		'int',
 		'character',
 		'boolean'
 	];
 	constructor(){
-		console.info("Hello World");
 		this._outputLocation = document.getElementById('designer-output');
 		this.addEventListeners();
 	}
@@ -31,11 +32,16 @@ class DesignerController{
 		this._outputLocation.appendChild(div);	
 	}
 
-
+	// Creates the Table header.
+	// Adds keyup listener to change the ID of the element to match the value
 	createHeader(){
 		let header = document.createElement('input');
 		header.placeholder = "Table Name";
 		header.id = "table-1";
+
+		header.addEventListener('keyup', function(e) {
+			this.id = "table-" + this.value;
+		});
 
 		return header;
 	}
@@ -77,6 +83,15 @@ class DesignerController{
 		return buttonDiv;
 	}
 
+
+	addRow(){
+		let column = document.createElement('div');
+		column.className = "column";
+
+		column.appendChild(this.createInput());
+		
+	}
+
 	addEvent(type){
 		console.log(type);
 		switch (type) {
@@ -85,7 +100,7 @@ class DesignerController{
 				break;
 			
 			case "add":
-				alert("Add");
+				this.addRow();
 				break;
 		}
 	}
