@@ -24,11 +24,32 @@ body{
 -----------------------------------------*/
 .table{
 	position: relative;
-	width: 120px;
+	width: 300px;
 	border:1px solid  #333;
 	position: relative;
 	display: block;
+	float:left;
 }
+
+.row{
+	display: block;
+}
+.row input{
+	float: left;
+
+}
+
+.row input.column-name{
+	width:200px;
+}
+.row input.column-select{
+	width:50px;
+}
+
+
+/*-----------------------------------------
+	Navigation UI
+-----------------------------------------*/
 
 .nav{
 	background: #2c3e50;
@@ -56,6 +77,30 @@ body{
 	padding: 12px;
 }
 
+/*-----------------------------------------
+	designer specific
+-----------------------------------------*/
+#designer-info{
+	position: absolute;
+	width: 100%;
+	height: 40px;
+	bottom:0;
+	left:0;
+	background: #28323C;
+	color:#fff;
+
+	/*Ovverride the .content class*/
+	margin: 0px;
+	padding: 0;
+}
+
+/*-----------------------------------------
+	Text
+-----------------------------------------*/
 h1{
 	font-family: 'Open Sans', sans-serif;
+}
+
+button.option{
+	display: block;
 }

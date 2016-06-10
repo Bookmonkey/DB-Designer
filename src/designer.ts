@@ -2,6 +2,8 @@
 class DesignerController{
 	_outputLocation: Element;
 
+	tableCount: any;
+
 	// Defines the Value types. In the future it will be abstracted to support various types in different schemas.
 	_valueTypes = [
 		'int',
@@ -11,6 +13,8 @@ class DesignerController{
 	constructor(){
 		this._outputLocation = document.getElementById('designer-output');
 		this.addEventListeners();
+
+		this.tableCount = 0;
 	}
 
 	addEventListeners(){
@@ -20,27 +24,46 @@ class DesignerController{
 	}
 
 	addTable(){
+		let table = document.createElement('div');
+		table.className = "table";
+		table.id = `table-${this.tableCount}`;
+
+		table.appendChild(this.createHeader(this.tableCount));
+
 		let div = document.createElement('div');
-		div.className = "table";
+		div.className = "rows";
+		table.appendChild(div);
 
-		div.appendChild(this.createHeader());
-		div.appendChild(this.createInput());
-		div.appendChild(this.createSelect(this._valueTypes));
+		let add = document.createElement('button');
+		add.className = "option";
+		add.innerText = "Add Row";
+		add.addEventListener('click', (e) => {
+			this.addRow(table.id);
+		});
+
+		table.appendChild(add);
+
+		this._outputLocation.appendChild(table);	
+
+		this.tableCount++;
 
 
-		div.appendChild(this.createOptionButtons(['delete', 'add column']));
-		this._outputLocation.appendChild(div);	
+		document.getElementById('designer-info').innerHTML = `<p> Table Count: ${this.tableCount}</p>`;
 	}
 
 	// Creates the Table header.
 	// Adds keyup listener to change the ID of the element to match the value
-	createHeader(){
+	createHeader(id){
 		let header = document.createElement('input');
 		header.placeholder = "Table Name";
-		header.id = "table-1";
+		header.id = id;
 
+		// on the keyup event override the id for both the header and the outer div to match
 		header.addEventListener('keyup', function(e) {
-			this.id = "table-" + this.value;
+			console.log(document.getElementById(`table-${this.id}`));
+
+			document.getElementById(`table-${this.id}`).id = `table-${this.value}`;
+			this.id = this.value;
 		});
 
 		return header;
@@ -48,14 +71,15 @@ class DesignerController{
 
 	createInput(){
 		let input = document.createElement('input');
-		input.className = "table";
-		input.placeholder = "id";
+		input.className = "column-name";
+		input.placeholder = "column name";
 
 		return input;
 	}
 
 	createSelect(array){
 		let select = document.createElement('select');
+		select.className = "column-type";
 
 		for (var i = 0; i < array.length; i++){
 			let option = document.createElement('option');
@@ -67,42 +91,15 @@ class DesignerController{
 		return select;
 	}
 
-	createOptionButtons(array){
-		let buttonDiv = document.createElement('div');
-		buttonDiv.className = "btnGroup";
 
-		for(var i = 0; i < array.length; i++){
-			let button = document.createElement('button');
-			button.innerText = array[i] + "";
-			button.addEventListener('click', () => {
-				this.addEvent(array[i]);
-			});
-			buttonDiv.appendChild(button);
-		}
-
-		return buttonDiv;
-	}
-
-
-	addRow(){
-		let column = document.createElement('div');
-		column.className = "column";
-
-		column.appendChild(this.createInput());
+	addRow(tableID){
+		let div = document.createElement('div');
+		div.className = "row";
 		
-	}
-
-	addEvent(type){
-		console.log(type);
-		switch (type) {
-			case "delete":	
-				alert("delete");
-				break;
-			
-			case "add":
-				this.addRow();
-				break;
-		}
+		div.appendChild(this.createInput());
+		div.appendChild(this.createSelect(this._valueTypes));
+		document.getElementById(tableID).getElementsByClassName('rows')[0].appendChild(div);
+	
 	}
 }
 
