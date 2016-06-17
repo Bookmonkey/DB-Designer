@@ -24,7 +24,7 @@ class UIController {
 
 	addClickEventElement(index){
 		this._buttons[index].addEventListener('click', () => {
-			this.showElement(index);
+			this.handleEvent(index);
 		});
 	}
 
@@ -34,8 +34,12 @@ class UIController {
 		}
 	}
 
-	showElement(index: number){
+	handleEvent(index: number){
 		this.hideElements();
 		this._elements[index].className = "shown";
+
+		if(this._buttons[index].id === "click-code"){
+			let sql = new SQLGenerator();
+		}
 	}
 }

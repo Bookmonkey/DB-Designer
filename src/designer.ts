@@ -104,6 +104,4 @@ class DesignerController{
 }
 
 let designer = new DesignerController();
-let sql = new SQLGenerator();
-let canvasDrawer = new CanvasDrawer();
 let uiController = new UIController();
