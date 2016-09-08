@@ -3,6 +3,7 @@ class DesignerController{
 	_outputLocation: Element;
 
 	tableCount: any;
+	tableNames: any[];
 
 	// Defines the Value types. In the future it will be abstracted to support various types in different schemas.
 	_valueTypes = [
@@ -13,7 +14,7 @@ class DesignerController{
 	constructor(){
 		this._outputLocation = document.getElementById('designer-output');
 		this.addEventListeners();
-
+		this.tableNames = [];
 		this.tableCount = 0;
 	}
 
@@ -43,6 +44,8 @@ class DesignerController{
 
 		table.appendChild(add);
 
+		table.appendChild(this.createJoinElement());
+
 		this._outputLocation.appendChild(table);	
 
 		this.tableCount++;
@@ -57,13 +60,28 @@ class DesignerController{
 		let header = document.createElement('input');
 		header.placeholder = "Table Name";
 		header.id = id;
+		header.setAttribute('index', id);
+
+		this.tableNames.push({
+			id: id,
+			name: '',
+		});
 
 		// on the keyup event override the id for both the header and the outer div to match
-		header.addEventListener('keyup', function(e) {
-			console.log(document.getElementById(`table-${this.id}`));
+		header.addEventListener('keyup', (e) => {
+			console.log(document.getElementById(`table-${header.id}`));
 
-			document.getElementById(`table-${this.id}`).id = `table-${this.value}`;
-			this.id = this.value;
+			document.getElementById(`table-${header.id}`).id = `table-${header.value}`;
+			header.id = header.value;
+
+			this.tableNames.map((value) => {
+				if(parseInt(value.id) === parseInt(header.getAttribute('index'))){
+					value.name = header.value;
+				}
+			});
+		});
+		header.addEventListener('focusout', (e) => {
+			this.scanForTables();
 		});
 
 		return header;
@@ -77,9 +95,13 @@ class DesignerController{
 		return input;
 	}
 
-	createSelect(array){
+	createSelect(array, className){
+		if(className === undefined){
+			className = "column-type";
+		}
+
 		let select = document.createElement('select');
-		select.className = "column-type";
+		select.className = className;
 
 		for (var i = 0; i < array.length; i++){
 			let option = document.createElement('option');
@@ -99,9 +121,61 @@ class DesignerController{
 		div.appendChild(this.createInput());
 		div.appendChild(this.createSelect(this._valueTypes));
 		document.getElementById(tableID).getElementsByClassName('rows')[0].appendChild(div);
+	}
+
+
+	createJoinElement(){
+		let div = document.createElement('div');
+		div.className = "row";
+
+		var elements = this.tableNames.map((value) => {
+			return value.name
+		});
+		console.log(elements);
+
+		var label = document.createElement("label")
+		label.innerHTML = "Join on:";
+		div.appendChild(label);
+
+		div.appendChild(this.createSelect(elements, 'join-element-dropdown'));
+
+		return div;
+	}
+
+	// Gets all the dom elements 
+	scanForTables(){
+		let dropdowns = document.getElementsByClassName('join-element-dropdown');
+		// console.log(dropdowns);
+		// 
+		for(var i = 0; i < dropdowns.length; i++){
+			for(var s = 0; s <= dropdowns[i].options.length; s++){
+				dropdowns[i].options[s] = null;
+			}
+		}
+
+		var elements = this.tableNames.map((value) => {
+			return value.name;
+		});
+
+		console.log(elements);
 	
+
+		for(var d = 0; d < dropdowns.length; d++){
+			for (var e = 0; e < elements.length; e++){
+				let option = document.createElement('option');
+				option.value = elements[e];
+				option.text = elements[e];
+
+				dropdowns[d].appendChild(option);
+			}
+			
+		}
+
+
+		
 	}
 }
 
 let designer = new DesignerController();
 let uiController = new UIController();
+designer.scanForTables();	
